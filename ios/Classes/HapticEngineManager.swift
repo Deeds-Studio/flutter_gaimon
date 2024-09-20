@@ -39,8 +39,9 @@ class HapticEngineManager: NSObject {
   func startVibrationIOS(data: String) -> Void {
         do {
           let patternData = Data(data.utf8)
+          let pattern = CHHapticPattern(contentsOf: patternData)
 
-          self.advancedPlayer = try engine.makeAdvancedPlayer(with: patternData);
+          self.advancedPlayer = try engine.makeAdvancedPlayer(with: pattern);
           try self.advancedPlayer?.start(atTime: 0)
           print("Starting haptic player")
 
