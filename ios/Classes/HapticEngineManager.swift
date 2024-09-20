@@ -53,9 +53,9 @@ class HapticEngineManager: NSObject {
 //            let player = try engine?.makePlayer(with: pattern)
 //            try player?.start(atTime: 0)
           let patternData = Data(data.utf8)
-          let pattern = try CHHapticPattern(data: patternData)
+          let pattern = try CHHapticPattern(data: patternData, engine: engine)
           self.advancedPlayer = try engine.makeAdvancedPlayer(with: pattern)
-          try self.advancedPlayer?.start()
+          try self.advancedPlayer?.start(atTime: 0)
           print("Starting haptic player")
 
         } catch {
