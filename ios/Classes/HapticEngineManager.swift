@@ -11,8 +11,8 @@ import CoreHaptics
 @available(iOS 13.0, *)
 class HapticEngineManager: NSObject {
   private var engine: CHHapticEngine!
-  private var continuousPlayer: CHHapticPatternPlayer!
-  
+  private var advancedPlayer: CHHapticAdvancedPatternPlayer?
+
   func prepareHaptics() {
       guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else {return}
       do {
@@ -24,13 +24,17 @@ class HapticEngineManager: NSObject {
     }
 
 
-    func stopHaptics() {
-        do {
-            try continuousPlayer?.stop(atTime: CHHapticTimeImmediate)
-        } catch {
-            print("Failed to stop haptic player: \(error.localizedDescription)")
-        }
-    }
+  func resetHaptics() {
+      do {
+          // Reset the player to the beginning of the pattern
+          print("pausing haptic and resetting")
+
+          try advancedPlayer?.pause(atTime: CHHapticTimeImmediate)
+          try advancedPlayer?.seek(toOffset: 0)
+      } catch {
+          print("Failed to reset haptic player: \(error.localizedDescription)")
+      }
+  }
 
   func startVibrationIOS(data: String) -> Void {
     
@@ -48,12 +52,15 @@ class HapticEngineManager: NSObject {
 //            let pattern = try CHHapticPattern(events: events, parameters: [])
 //            let player = try engine?.makePlayer(with: pattern)
 //            try player?.start(atTime: 0)
-          try engine?.playPattern(from: Data(data.utf8))
+          self.advancedPlayer = try engine.makeAdvancedPlayer(with: pattern)
+          try self.advancedPlayer?.start(atTime: CHHapticTimeImmediate)
+          print("Starting haptic player")
+
         } catch {
             print("Failed to play pattern: \(error.localizedDescription).")
         }
 
-
   }
+
 
 }
