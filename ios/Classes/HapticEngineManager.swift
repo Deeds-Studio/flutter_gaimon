@@ -26,7 +26,7 @@ class HapticEngineManager: NSObject {
 
     func stopHaptics() {
         do {
-            try cotinuousPlayer?.stop(atTime: CHHapticTimeImmediate)
+            try continuousPlayer?.stop(atTime: CHHapticTimeImmediate)
         } catch {
             print("Failed to stop haptic player: \(error.localizedDescription)")
         }
