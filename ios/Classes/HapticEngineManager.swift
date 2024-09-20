@@ -30,39 +30,23 @@ class HapticEngineManager: NSObject {
           print("pausing haptic and resetting")
 
           try advancedPlayer?.pause(atTime: CHHapticTimeImmediate)
-          try advancedPlayer?.seek(toOffset: 0)
+          try advancedPlayer?.seek(toOffset: 0.0)
       } catch {
           print("Failed to reset haptic player: \(error.localizedDescription)")
       }
   }
 
   func startVibrationIOS(data: String) -> Void {
-    
-//    var events = [CHHapticEvent]()
-    
-
-//        for i in stride(from: 0, to: 1, by: 0.1) {
-//            let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: Float(1 - i))
-//            let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: Float(1 - i))
-//            let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: i)
-//            events.append(event)
-//        }
-
         do {
-//            let pattern = try CHHapticPattern(events: events, parameters: [])
-//            let player = try engine?.makePlayer(with: pattern)
-//            try player?.start(atTime: 0)
           let patternData = Data(data.utf8)
-          let pattern = try CHHapticPattern(data: patternData, engine: engine)
-          self.advancedPlayer = try engine.makeAdvancedPlayer(with: pattern)
+
+          self.advancedPlayer = try engine.makeAdvancedPlayer(with: patternData);
           try self.advancedPlayer?.start(atTime: 0)
           print("Starting haptic player")
 
         } catch {
             print("Failed to play pattern: \(error.localizedDescription).")
         }
-
   }
-
 
 }
