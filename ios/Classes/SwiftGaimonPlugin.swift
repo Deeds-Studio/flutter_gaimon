@@ -95,6 +95,11 @@ public class SwiftGaimonPlugin: NSObject, FlutterPlugin {
         }
       }
       break
+    case "stop":
+      if #available(iOS 13.0, *) {
+        hapticManager.stopHaptics()
+      }
+      break
     default:
       break
     }

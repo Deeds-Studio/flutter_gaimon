@@ -39,6 +39,8 @@ class Gaimon {
   /// generate a soft impact vibration
   static void soft() => _channel.invokeMethod('soft');
 
+  static void stop() => _channel.invokeMethod('stop');
+
   /// generate a custom pattern impact vibration
   static void patternFromData(String data) => Platform.isAndroid
       ? _patternFromAhapToWaveform(data)
