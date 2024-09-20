@@ -37,17 +37,27 @@ class HapticEngineManager: NSObject {
   }
 
   func startVibrationIOS(data: String) -> Void {
-        do {
-          let patternData = Data(data.utf8)
-          let pattern = CHHapticPattern(contentsOf: patternData)
+    do {
+        // Convert JSON string into a dictionary
+        if let jsonData = data.data(using: .utf8),
+           let patternDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [CHHapticPattern.Key: Any] {
+            
+            // Create haptic pattern from dictionary
+            let pattern = try CHHapticPattern(dictionary: patternDict)
 
-          self.advancedPlayer = try engine.makeAdvancedPlayer(with: pattern);
-          try self.advancedPlayer?.start(atTime: 0)
-          print("Starting haptic player")
+            // Create haptic player and start the vibration
+            self.advancedPlayer = try engine.makeAdvancedPlayer(with: pattern)
+            try self.advancedPlayer?.start(atTime: 0)
+            
+            print("Starting haptic player")
 
-        } catch {
-            print("Failed to play pattern: \(error.localizedDescription).")
+        } else {
+            print("Invalid JSON format")
         }
+
+    } catch {
+        print("Failed to play pattern: \(error.localizedDescription).")
+    }
   }
 
 }
