@@ -38,15 +38,15 @@ class HapticEngineManager: NSObject {
 
   func startVibrationIOS(data: String) -> Void {
     
-    var events = [CHHapticEvent]()
+//    var events = [CHHapticEvent]()
     
 
-        for i in stride(from: 0, to: 1, by: 0.1) {
-            let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: Float(1 - i))
-            let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: Float(1 - i))
-            let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: i)
-            events.append(event)
-        }
+//        for i in stride(from: 0, to: 1, by: 0.1) {
+//            let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: Float(1 - i))
+//            let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: Float(1 - i))
+//            let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: i)
+//            events.append(event)
+//        }
 
         do {
 //            let pattern = try CHHapticPattern(events: events, parameters: [])
@@ -55,7 +55,7 @@ class HapticEngineManager: NSObject {
           let patternData = Data(data.utf8)
           let pattern = try CHHapticPattern(data: patternData)
           self.advancedPlayer = try engine.makeAdvancedPlayer(with: pattern)
-          try self.advancedPlayer?.start(atTime: CHHapticTimeImmediate)
+          try self.advancedPlayer?.start()
           print("Starting haptic player")
 
         } catch {
